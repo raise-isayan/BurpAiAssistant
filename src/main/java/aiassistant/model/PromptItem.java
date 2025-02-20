@@ -9,7 +9,7 @@ import com.google.gson.annotations.Expose;
 public class PromptItem {
 
     @Expose
-    private PromptProperty.Category promptCategory = PromptProperty.Category.ASSISTANT;
+    private PromptProperty.Category promptCategory = PromptProperty.Category.SYSTEM;
 
     /**
      * @return the promptCategory

@@ -48,7 +48,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
 
     @Override
     public String getTabCaption() {
-        return "Burp Ai Assistant";
+        return "AI Assistant";
     }
 
     @Override
