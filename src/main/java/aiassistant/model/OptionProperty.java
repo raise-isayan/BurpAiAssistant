@@ -11,7 +11,6 @@ import java.util.Map;
  */
 public class OptionProperty implements IOptionProperty {
 
-
     private final Map<String, String> config = new HashMap();
 
     @Override

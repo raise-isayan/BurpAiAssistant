@@ -15,7 +15,9 @@ import javax.swing.JMenuItem;
 import aiassistant.model.OptionProperty;
 import aiassistant.model.PromptProperty;
 import aiassistant.view.TabbetOption;
+import burp.api.montoya.EnhancedCapability;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import javax.swing.JRadioButtonMenuItem;
 
@@ -41,6 +43,11 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 //        }
 //        this.option.setProperty(config);
 //        this.tabbetOption.setProperty(this.option);
+    }
+
+    @Override
+    public Set<EnhancedCapability> enhancedCapabilities() {
+        return Set.of(EnhancedCapability.AI_FEATURES);
     }
 
     public static JMenuItem createMenuItem(String caption, int mnemonic, ActionListener actionListener) {

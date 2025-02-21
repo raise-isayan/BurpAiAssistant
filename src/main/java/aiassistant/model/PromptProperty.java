@@ -12,11 +12,11 @@ import java.util.List;
  */
 public class PromptProperty implements IPropertyConfig {
 
-    public enum Category {
-        ASSISTANT, USER, SYSTEM
-    };
-
     public static String PROMPT_PROPERTY = "PromptProperty";
+
+    public enum Category {
+        SYSTEM, USER, ASSISTANT
+    };
 
     @Expose
     private final List<PromptItem> promptList = new ArrayList<>();

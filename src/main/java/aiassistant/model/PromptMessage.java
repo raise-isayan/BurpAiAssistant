@@ -8,53 +8,63 @@ import burp.api.montoya.ai.chat.Message;
  */
 public class PromptMessage {
 
-    private PromptProperty.Category category;
-    private String prompt;
+    private final PromptItem item;
 
-    public PromptMessage(PromptProperty.Category category, String prompt) {
-        this.category = category;
-        this.prompt = prompt;
+    public PromptMessage(PromptItem item) {
+        this.item = item;
     }
 
     /**
      * @return the category
      */
-    public PromptProperty.Category getCategory() {
-        return category;
+    public PromptProperty.Category getPromptCategory() {
+        return item.getPromptCategory();
     }
 
     /**
      * @param category the category to set
      */
-    public void setCategory(PromptProperty.Category category) {
-        this.category = category;
+    public void setPromptCategory(PromptProperty.Category category) {
+        this.item.setPromptCategory(category);
     }
 
     /**
      * @return the prompt
      */
-    public String getPrompt() {
-        return prompt;
+    public String getPromptRequest() {
+        return item.getPromptRequest();
     }
 
     /**
      * @param prompt the prompt to set
      */
-    public void setPrompt(String prompt) {
-        this.prompt = prompt;
+    public void setPromptRequest(String prompt) {
+        this.item.setPromptRequest(prompt);
+    }
+
+    public String getPromptResponse() {
+        return this.item.getPromptResponse();
+    }
+
+    public void setPromptResponse(String prompt) {
+        this.item.setPromptResponse(prompt);
+    }
+
+    public PromptItem getPromptItem() {
+        return this.item;
     }
 
     public Message asMessage() {
         Message message = null;
-        switch (category) {
+        switch (this.item.getPromptCategory()) {
             case ASSISTANT:
-                message = Message.assistantMessage(prompt);
+                message = Message.assistantMessage(this.item.getPromptRequest());
                 break;
             case USER:
-                message = Message.userMessage(prompt);
+                message = Message.userMessage(this.item.getPromptRequest());
                 break;
             case SYSTEM:
-                message = Message.systemMessage(prompt);
+                message = Message.systemMessage(this.item.getPromptRequest());
                 break;
         }
         return message;

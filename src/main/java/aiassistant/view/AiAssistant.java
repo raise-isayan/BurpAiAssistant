@@ -12,13 +12,19 @@ import aiassistant.model.PromptItem;
 import aiassistant.model.PromptMessage;
 import aiassistant.model.PromptProperty;
 import burp.api.montoya.MontoyaApi;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 /**
  *
  * @author isayan
  */
 public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
+
+    private final static Logger logger = Logger.getLogger(AiAssistant.class.getName());
 
     /**
      * Creates new form AiChat
@@ -184,7 +190,7 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
         this.promptProperty.setProperty(promptProperty);
     }
 
-    public PromptProperty.Category getCategory() {
+    public PromptProperty.Category getPromptCategory() {
         PromptProperty.Category category = PromptProperty.Category.SYSTEM;
         if (this.rdoAssistant.isSelected()) {
             category = PromptProperty.Category.ASSISTANT;
@@ -196,39 +202,64 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
         return category;
     }
 
-    public String getPromptMessage() {
+    public String getPromptRequest() {
         return this.txtPrompt.getText();
     }
-
 
     public boolean isAiEnabled() {
         if (BurpExtension.getInstance().getProperty().getDebug()) {
             return true;
-        }
-        else {
+        } else {
             MontoyaApi api = BurpExtension.api();
             return api.ai().isEnabled();
         }
     }
 
-    public PromptMessage getMessage() {
-        PromptMessage message = new PromptMessage(getCategory(), getPromptMessage());
-        return message;
+    public PromptMessage getPromptMessage() {
+        PromptItem item = new PromptItem();
+        item.setPromptCategory(this.getPromptCategory());
+        item.setPromptRequest(this.getPromptRequest());
+        return new PromptMessage(item);
     }
 
-    public PromptResponse sendPrompt(Message message) {
-        if (BurpExtension.getInstance().getProperty().getDebug()) {
-            return new PromptResponse() {
-                @Override
-                public String content() {
-                    return "resopnse message from " + message;
+    public void sendPrompt(final PromptMessage message) {
+        SwingWorker swSend = new SwingWorker<PromptResponse, Object>() {
+            @Override
+            protected PromptResponse doInBackground() throws Exception {
+                PromptResponse promptResponse = null;
+                if (BurpExtension.getInstance().getProperty().getDebug()) {
+                    promptResponse = new PromptResponse() {
+                        @Override
+                        public String content() {
+                            return "resopnse message from " + message.getPromptRequest();
+                        }
+                    };
+                } else {
+                    MontoyaApi api = BurpExtension.api();
+                    promptResponse = api.ai().prompt().execute(message.asMessage());
                 }
-            };
-        }
-        else {
-            MontoyaApi api = BurpExtension.api();
-            return api.ai().prompt().execute(message);
-        }
+                return promptResponse;
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    PromptResponse promptResponse = get();
+                    if (message != null) {
+                        txtResponse.setText(promptResponse.content());
+                        message.setPromptResponse(promptResponse.content());
+                        List<PromptItem> list = promptProperty.getPromptList();
+                        list.add(message.getPromptItem());
+                    }
+                    generatePromptHistory();
+                } catch (InterruptedException ex) {
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                } catch (ExecutionException ex) {
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        };
+        swSend.execute();
     }
 
     public PromptProperty getLoggingProperty() {
@@ -266,23 +297,8 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
                 JOptionPane.showMessageDialog(this, "Burp Ai Not enabile");
                 return;
             }
-            List<PromptItem> list = this.promptProperty.getPromptList();
-            PromptMessage message = getMessage();
-            PromptItem item = new PromptItem();
-            item.setPromptCategory(message.getCategory());
-            //BurpExtension.helpers().outPrintln(message.getCategory().name());
-            item.setPromptRequest(message.getPrompt());
-            //BurpExtension.helpers().outPrintln(message.getPrompt());
-            PromptResponse prompt = this.sendPrompt(message.asMessage());
-            if (prompt != null) {
-                this.txtResponse.setText(prompt.content());
-                item.setPromptResponse(prompt.content());
-                list.add(item);
-                //BurpExtension.helpers().outPrintln(prompt.content());
-            }
-            generatePromptHistory();
+            this.sendPrompt(this.getPromptMessage());
             this.firePropertyChange(PromptProperty.PROMPT_PROPERTY, null, this.promptProperty);
-
         } catch (Exception ex) {
             String stack = StringUtil.getStackTrace(ex);
             BurpExtension.helpers().errPrintln(stack);
@@ -324,6 +340,5 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
     public Component getUiComponent() {
         return this;
     }
-
 
 }
