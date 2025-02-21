@@ -49,8 +49,8 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jSplitPane1 = new javax.swing.JSplitPane();
-        jPanel1 = new javax.swing.JPanel();
+        splitPrompt = new javax.swing.JSplitPane();
+        pnlPromptRight = new javax.swing.JPanel();
         scrollPrompt = new javax.swing.JScrollPane();
         txtPrompt = new javax.swing.JTextArea();
         btnSend = new javax.swing.JButton();
@@ -62,14 +62,14 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
         scrollResponse = new javax.swing.JScrollPane();
         txtResponse = new javax.swing.JTextArea();
         btnCopyResponseToPrompt = new javax.swing.JButton();
-        pnlPromptHistory = new javax.swing.JPanel();
+        pnlPromptLeft = new javax.swing.JPanel();
         scrollPromptHistory = new javax.swing.JScrollPane();
         txtPromtHistory = new javax.swing.JEditorPane();
         lblPromptHistory = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
-        jSplitPane1.setDividerLocation(500);
+        splitPrompt.setDividerLocation(500);
 
         txtPrompt.setColumns(20);
         txtPrompt.setRows(5);
@@ -109,39 +109,38 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(lblPrompt)
-                .addGap(18, 18, 18)
-                .addComponent(rdoSystem)
-                .addGap(18, 18, 18)
-                .addComponent(rdoUser)
-                .addGap(18, 18, 18)
-                .addComponent(rdoAssistant)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlPromptRightLayout = new javax.swing.GroupLayout(pnlPromptRight);
+        pnlPromptRight.setLayout(pnlPromptRightLayout);
+        pnlPromptRightLayout.setHorizontalGroup(
+            pnlPromptRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPromptRightLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlPromptRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(scrollResponse)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlPromptRightLayout.createSequentialGroup()
+                        .addGroup(pnlPromptRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlPromptRightLayout.createSequentialGroup()
+                                .addComponent(lblPrompt)
+                                .addGap(18, 18, 18)
+                                .addComponent(rdoSystem)
+                                .addGap(18, 18, 18)
+                                .addComponent(rdoUser)
+                                .addGap(18, 18, 18)
+                                .addComponent(rdoAssistant)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(scrollPrompt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(pnlPromptRightLayout.createSequentialGroup()
                                 .addComponent(lblRespose)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnCopyResponseToPrompt, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap())))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        pnlPromptRightLayout.setVerticalGroup(
+            pnlPromptRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPromptRightLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlPromptRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPrompt)
                     .addComponent(btnSend)
                     .addComponent(rdoSystem)
@@ -150,7 +149,7 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrollPrompt, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlPromptRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblRespose)
                     .addComponent(btnCopyResponseToPrompt))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -158,23 +157,23 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
                 .addContainerGap(134, Short.MAX_VALUE))
         );
 
-        jSplitPane1.setRightComponent(jPanel1);
+        splitPrompt.setRightComponent(pnlPromptRight);
 
-        pnlPromptHistory.setLayout(new java.awt.BorderLayout());
+        pnlPromptLeft.setLayout(new java.awt.BorderLayout());
 
         txtPromtHistory.setEditable(false);
         txtPromtHistory.setContentType("text/html"); // NOI18N
         txtPromtHistory.setToolTipText("");
         scrollPromptHistory.setViewportView(txtPromtHistory);
 
-        pnlPromptHistory.add(scrollPromptHistory, java.awt.BorderLayout.CENTER);
+        pnlPromptLeft.add(scrollPromptHistory, java.awt.BorderLayout.CENTER);
 
         lblPromptHistory.setText("Prompt History");
-        pnlPromptHistory.add(lblPromptHistory, java.awt.BorderLayout.PAGE_START);
+        pnlPromptLeft.add(lblPromptHistory, java.awt.BorderLayout.PAGE_START);
 
-        jSplitPane1.setLeftComponent(pnlPromptHistory);
+        splitPrompt.setLeftComponent(pnlPromptLeft);
 
-        add(jSplitPane1, java.awt.BorderLayout.CENTER);
+        add(splitPrompt, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private final PromptProperty promptProperty = new PromptProperty();
@@ -314,18 +313,18 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JButton btnCopyResponseToPrompt;
     private javax.swing.JButton btnSend;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JLabel lblPrompt;
     private javax.swing.JLabel lblPromptHistory;
     private javax.swing.JLabel lblRespose;
-    private javax.swing.JPanel pnlPromptHistory;
+    private javax.swing.JPanel pnlPromptLeft;
+    private javax.swing.JPanel pnlPromptRight;
     private javax.swing.JRadioButton rdoAssistant;
     private javax.swing.JRadioButton rdoSystem;
     private javax.swing.JRadioButton rdoUser;
     private javax.swing.JScrollPane scrollPrompt;
     private javax.swing.JScrollPane scrollPromptHistory;
     private javax.swing.JScrollPane scrollResponse;
+    private javax.swing.JSplitPane splitPrompt;
     private javax.swing.JTextArea txtPrompt;
     private javax.swing.JEditorPane txtPromtHistory;
     private javax.swing.JTextArea txtResponse;
