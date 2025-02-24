@@ -35,8 +35,8 @@ repositories {
 shadowJar {
    mergeServiceFiles()
    destinationDirectory = file('release')
+   archiveVersion =  "v${release_version_major}"
 }
-
 application {
     // Define the main class for the application.
     mainClass = 'BurpAiAssistant.MainFrame'
@@ -46,48 +46,13 @@ dependencies {
     // https://mvnrepository.com/artifact/net.portswigger.burp.extensions/montoya-api
     compileOnly 'net.portswigger.burp.extensions:montoya-api:2025.2'
 
-    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
-    compileOnly 'org.bouncycastle:bcpkix-jdk18on:1.78.1'
-    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
-    compileOnly 'org.bouncycastle:bcprov-jdk18on:1.78.1'
-
-    // https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
-    implementation 'org.xerial:sqlite-jdbc:3.47.0.0'
-
-    // https://mvnrepository.com/artifact/commons-dbutils/commons-dbutils
-    implementation 'commons-dbutils:commons-dbutils:1.8.1'
-
-    // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
-    implementation 'com.fifesoft:rsyntaxtextarea:3.5.1'
-//    implementation 'com.fifesoft:rsyntaxtextarea:3.3.4'
-
-    // https://mvnrepository.com/artifact/net.portswigger.burp.extensions/montoya-api
-    implementation 'net.portswigger.burp.extensions:montoya-api:2025.2'
-
-    // https://mvnrepository.com/artifact/commons-net/commons-net
-    implementation group: 'commons-net', name: 'commons-net', version: '3.10.0'
-
-    // This dependency is used by the application.
-    implementation 'com.google.guava:guava:32.1.1-jre'
-
     // https://github.com/raise-isayan/BurpExtensionCommons
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    // https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk18on
-    testImplementation 'org.bouncycastle:bcpkix-jdk18on:1.78.1'
-    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
-    testImplementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
-
-    // https://mvnrepository.com/artifact/org.brotli/dec
-    compileOnly 'org.brotli:dec:0.1.2'
 
     // Use JUnit Jupiter for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-    // https://mvnrepository.com/artifact/net.minidev/json-smart
-    testImplementation 'net.minidev:json-smart:2.5.1'
 
 }
 

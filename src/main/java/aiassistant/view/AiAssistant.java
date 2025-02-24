@@ -226,6 +226,7 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
             @Override
             protected PromptResponse doInBackground() throws Exception {
                 PromptResponse promptResponse = null;
+                publish("...");
                 if (BurpExtension.getInstance().getProperty().getDebug()) {
                     promptResponse = new PromptResponse() {
                         @Override
@@ -238,6 +239,11 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
                     promptResponse = api.ai().prompt().execute(message.asMessage());
                 }
                 return promptResponse;
+            }
+
+            @Override
+            protected void process(List<Object> chunks) {
+                txtResponse.setText("Processing" + StringUtil.repeat("...", chunks.size()));
             }
 
             @Override
