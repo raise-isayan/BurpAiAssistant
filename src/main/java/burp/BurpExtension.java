@@ -35,7 +35,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         registerMenu();
         registerView();
 //        Preferences property = api().persistence().preferences();
-//        // 設定ファイル読み込み
 //        Map<String, String> config = this.option.loadConfigSetting();
 //        Set<String> keySet = property.stringKeys();
 //        for (String key : keySet) {
@@ -85,6 +84,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     private void registerMenu() {
         final JMenu aiMenu = new JMenu();
         aiMenu.setText("Ai Assistant");
+        aiMenu.setMnemonic(KeyEvent.VK_A);
         JMenuItem aiLoadItem = createMenuItem("Load", KeyEvent.VK_L, this.loadAction);
         aiMenu.add(aiLoadItem);
         JMenuItem aiSaveItem = createMenuItem("Save", KeyEvent.VK_S, this.saveAction);

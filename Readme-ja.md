@@ -14,7 +14,6 @@ Burp suiteのAIについては次のURLを参照してください。
 
 * https://portswigger.net/burp/documentation/desktop/extensions/creating/creating-ai-extensions
 
-
 ## 最新版について
 
 メインのリポジトリ(main)には開発中のコードが含まれている場合があります。
@@ -36,7 +35,15 @@ Burp suite の Extenderは以下の手順で読み込めます。
 
 ### Ai Assistant タブ
 
-- Prompt List: 過去のプロンプト履歴を表示
+### Ai Assistant メニュー
+
+- Load: load from prompt list 
+
+- Save: save to config prompt list 
+
+#### Prompt List
+
+過去のプロンプト履歴を表示
 
 #### Prompt
 

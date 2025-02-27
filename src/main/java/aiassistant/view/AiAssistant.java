@@ -222,7 +222,8 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
     }
 
     public void sendPrompt(final PromptMessage message) {
-        SwingWorker swSend = new SwingWorker<PromptResponse, Object>() {
+        txtResponse.setText("Processing...");
+        SwingWorker swSend = new SwingWorker<PromptResponse, String>() {
             @Override
             protected PromptResponse doInBackground() throws Exception {
                 PromptResponse promptResponse = null;
@@ -231,7 +232,12 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
                     promptResponse = new PromptResponse() {
                         @Override
                         public String content() {
-                            return "resopnse message from " + message.getPromptRequest();
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException ex) {
+                                logger.log(Level.SEVERE, ex.getMessage(), ex);
+                            }
+                            return "resopnse message from \r\n" + message.getPromptRequest();
                         }
                     };
                 } else {
@@ -242,7 +248,7 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
             }
 
             @Override
-            protected void process(List<Object> chunks) {
+            protected void process(List<String> chunks) {
                 txtResponse.setText("Processing" + StringUtil.repeat("...", chunks.size()));
             }
 
@@ -275,21 +281,27 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
         this.promptProperty.setProperty(promptProperty);
     }
 
+    public static String newLineToHtmlTag(String value) {
+        return value.replaceAll("(\\r|\\n|\\r\\n)", "<br />");
+    }
+
     public void generatePromptHistory() {
         final StringBuffer buff = new StringBuffer();
         List<PromptItem> list = this.promptProperty.getPromptList();
         buff.append("<html>");
         for (PromptItem item : list) {
+            String request = item.getPromptRequest();
+            String respose = item.getPromptResponse();
             buff.append("<p>");
             buff.append("<strong>Prompt:</strong> ");
             buff.append(HttpUtil.toHtmlEncode(item.getPromptCategory().name()));
             buff.append("</p>");
             buff.append("<code>");
-            buff.append(HttpUtil.toHtmlEncode(item.getPromptRequest()));
+            buff.append(newLineToHtmlTag(HttpUtil.toHtmlEncode(request)));
             buff.append("</code>");
             buff.append("<p><strong>Response:</strong></p>");
             buff.append("<code>");
-            buff.append(HttpUtil.toHtmlEncode(item.getPromptResponse()));
+            buff.append(newLineToHtmlTag(HttpUtil.toHtmlEncode(respose)));
             buff.append("</code>");
         }
         buff.append("</html>");

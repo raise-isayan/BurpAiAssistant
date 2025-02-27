@@ -34,9 +34,17 @@ The Burp Suite Extender can be loaded by following the steps below.
 2. Click [Select file ...] and select ImageMetaExtract.jar.
 3. Click [Next], confirm that no error is occurring, and close the dialog with [Close].
 
+### Ai Assistant Menu
+
+- Load: Load prompt history from file
+
+- Save: Save prompt history to file
+
 ### Ai Assistant Tab
 
-- Prompt List: Displays past prompt history
+#### Prompt List
+
+Displays past prompt history
 
 #### Prompt
 
