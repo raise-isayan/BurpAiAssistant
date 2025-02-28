@@ -29,6 +29,21 @@ public class PromptItem {
     }
 
     @Expose
+    private int temperature = 8;
+
+    public void setTemperature(int temperature) {
+        this.temperature = temperature;
+    }
+
+    public int getTemperature() {
+        return this.temperature;
+    }
+
+    public double asTemperature() {
+        return (double) this.temperature / (double) 10.0;
+    }
+
+    @Expose
     private String promptRequest;
 
     /**

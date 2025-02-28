@@ -1,7 +1,6 @@
 package aiassistant.view;
 
 import burp.BurpExtension;
-import burp.api.montoya.ai.chat.Message;
 import burp.api.montoya.ai.chat.PromptResponse;
 import extension.burp.IBurpTab;
 import extension.helpers.HttpUtil;
@@ -12,9 +11,16 @@ import aiassistant.model.PromptItem;
 import aiassistant.model.PromptMessage;
 import aiassistant.model.PromptProperty;
 import burp.api.montoya.MontoyaApi;
+import burp.api.montoya.ai.chat.PromptOptions;
+import java.awt.Font;
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.util.Hashtable;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
@@ -37,6 +43,17 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
     private void customizeComponents() {
         this.txtPromtHistory.setFocusable(false);
         this.txtPrompt.requestFocusInWindow();
+
+        this.spnTemperature.setPaintLabels(true);
+        this.spnTemperature.setPaintTicks(true);
+        Format f = new DecimalFormat("0.0");
+        Hashtable<Integer, JComponent> labels = new Hashtable<>();
+        for (int i = 0; i <= this.spnTemperature.getMaximum(); i++) {
+            JLabel label = new JLabel(f.format(i * 0.1));
+            label.setFont(label.getFont().deriveFont(Font.PLAIN));
+            labels.put(i, label);
+        }
+        this.spnTemperature.setLabelTable(labels);
     }
 
     /**
@@ -54,14 +71,16 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
         scrollPrompt = new javax.swing.JScrollPane();
         txtPrompt = new javax.swing.JTextArea();
         btnSend = new javax.swing.JButton();
-        rdoAssistant = new javax.swing.JRadioButton();
-        rdoUser = new javax.swing.JRadioButton();
-        rdoSystem = new javax.swing.JRadioButton();
         lblPrompt = new javax.swing.JLabel();
         lblRespose = new javax.swing.JLabel();
         scrollResponse = new javax.swing.JScrollPane();
         txtResponse = new javax.swing.JTextArea();
         btnCopyResponseToPrompt = new javax.swing.JButton();
+        tglSystem = new javax.swing.JToggleButton();
+        tglUser = new javax.swing.JToggleButton();
+        tglAssistant = new javax.swing.JToggleButton();
+        lbTemperature = new javax.swing.JLabel();
+        spnTemperature = new javax.swing.JSlider();
         pnlPromptLeft = new javax.swing.JPanel();
         scrollPromptHistory = new javax.swing.JScrollPane();
         txtPromtHistory = new javax.swing.JEditorPane();
@@ -82,16 +101,6 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        buttonGroup1.add(rdoAssistant);
-        rdoAssistant.setText("assistant");
-
-        buttonGroup1.add(rdoUser);
-        rdoUser.setText("user");
-
-        buttonGroup1.add(rdoSystem);
-        rdoSystem.setSelected(true);
-        rdoSystem.setText("system");
-
         lblPrompt.setText("Prompt:");
 
         lblRespose.setText("Response:");
@@ -109,6 +118,22 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
+        buttonGroup1.add(tglSystem);
+        tglSystem.setSelected(true);
+        tglSystem.setText("system");
+
+        buttonGroup1.add(tglUser);
+        tglUser.setText("user");
+
+        buttonGroup1.add(tglAssistant);
+        tglAssistant.setText("assistant");
+
+        lbTemperature.setText("Temperature:");
+
+        spnTemperature.setMaximum(20);
+        spnTemperature.setToolTipText("");
+        spnTemperature.setValue(8);
+
         javax.swing.GroupLayout pnlPromptRightLayout = new javax.swing.GroupLayout(pnlPromptRight);
         pnlPromptRight.setLayout(pnlPromptRightLayout);
         pnlPromptRightLayout.setHorizontalGroup(
@@ -119,21 +144,25 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(scrollResponse)
                     .addGroup(pnlPromptRightLayout.createSequentialGroup()
                         .addGroup(pnlPromptRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scrollPrompt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
                             .addGroup(pnlPromptRightLayout.createSequentialGroup()
                                 .addComponent(lblPrompt)
-                                .addGap(18, 18, 18)
-                                .addComponent(rdoSystem)
-                                .addGap(18, 18, 18)
-                                .addComponent(rdoUser)
-                                .addGap(18, 18, 18)
-                                .addComponent(rdoAssistant)
+                                .addGap(8, 8, 8)
+                                .addComponent(tglSystem, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tglUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tglAssistant, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(scrollPrompt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
                             .addGroup(pnlPromptRightLayout.createSequentialGroup()
                                 .addComponent(lblRespose)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnCopyResponseToPrompt, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnCopyResponseToPrompt, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlPromptRightLayout.createSequentialGroup()
+                                .addComponent(lbTemperature)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(spnTemperature, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
         pnlPromptRightLayout.setVerticalGroup(
@@ -143,18 +172,22 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
                 .addGroup(pnlPromptRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPrompt)
                     .addComponent(btnSend)
-                    .addComponent(rdoSystem)
-                    .addComponent(rdoUser)
-                    .addComponent(rdoAssistant))
+                    .addComponent(tglSystem)
+                    .addComponent(tglUser)
+                    .addComponent(tglAssistant))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollPrompt, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
                 .addGroup(pnlPromptRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbTemperature)
+                    .addComponent(spnTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(scrollPrompt, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlPromptRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblRespose)
                     .addComponent(btnCopyResponseToPrompt))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrollResponse, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(95, Short.MAX_VALUE))
         );
 
         splitPrompt.setRightComponent(pnlPromptRight);
@@ -191,14 +224,18 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
 
     public PromptProperty.Category getPromptCategory() {
         PromptProperty.Category category = PromptProperty.Category.SYSTEM;
-        if (this.rdoAssistant.isSelected()) {
+        if (this.tglAssistant.isSelected()) {
             category = PromptProperty.Category.ASSISTANT;
-        } else if (this.rdoUser.isSelected()) {
+        } else if (this.tglUser.isSelected()) {
             category = PromptProperty.Category.USER;
-        } else if (this.rdoSystem.isSelected()) {
+        } else if (this.tglSystem.isSelected()) {
             category = PromptProperty.Category.SYSTEM;
         }
         return category;
+    }
+
+    public int getTemperature() {
+        return this.spnTemperature.getValue();
     }
 
     public String getPromptRequest() {
@@ -217,6 +254,7 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
     public PromptMessage getPromptMessage() {
         PromptItem item = new PromptItem();
         item.setPromptCategory(this.getPromptCategory());
+        item.setTemperature(this.getTemperature());
         item.setPromptRequest(this.getPromptRequest());
         return new PromptMessage(item);
     }
@@ -242,7 +280,7 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
                     };
                 } else {
                     MontoyaApi api = BurpExtension.api();
-                    promptResponse = api.ai().prompt().execute(message.asMessage());
+                    promptResponse = api.ai().prompt().execute(PromptOptions.promptOptions().withTemperature(message.asTemperature()), message.asMessage());
                 }
                 return promptResponse;
             }
@@ -282,7 +320,7 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
     }
 
     public static String newLineToHtmlTag(String value) {
-        return value.replaceAll("(\\r|\\n|\\r\\n)", "<br />");
+        return value.replaceAll("(\\r\\n|\\r|\\n)", "<br />");
     }
 
     public void generatePromptHistory() {
@@ -292,17 +330,27 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
         for (PromptItem item : list) {
             String request = item.getPromptRequest();
             String respose = item.getPromptResponse();
-            buff.append("<p>");
-            buff.append("<strong>Prompt:</strong> ");
+            buff.append("<dl>");
+            buff.append("<dt>");
+            buff.append("<strong>Prompt: </strong>");
             buff.append(HttpUtil.toHtmlEncode(item.getPromptCategory().name()));
-            buff.append("</p>");
-            buff.append("<code>");
+            buff.append("<div>");
+            buff.append("Tempture: ");
+            buff.append(String.format("%1.1f", item.asTemperature()));
+            buff.append("</div>");
+            buff.append("</dt>");
+            buff.append("<dd>");
             buff.append(newLineToHtmlTag(HttpUtil.toHtmlEncode(request)));
-            buff.append("</code>");
-            buff.append("<p><strong>Response:</strong></p>");
-            buff.append("<code>");
+            buff.append("</dd>");
+            buff.append("</dl>");
+            buff.append("<dl>");
+            buff.append("<dt>");
+            buff.append("<strong>Response:</strong>");
+            buff.append("</dt>");
+            buff.append("<dd>");
             buff.append(newLineToHtmlTag(HttpUtil.toHtmlEncode(respose)));
-            buff.append("</code>");
+            buff.append("</dd>");
+            buff.append("</dl>");
         }
         buff.append("</html>");
         this.txtPromtHistory.setText(buff.toString());
@@ -311,7 +359,7 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         try {
             if (!isAiEnabled()) {
-                JOptionPane.showMessageDialog(this, "Burp Ai Not enabile");
+                JOptionPane.showMessageDialog(this, "Burp Ai not enabled");
                 return;
             }
             this.sendPrompt(this.getPromptMessage());
@@ -324,25 +372,27 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
 
     private void btnCopyResponseToPromptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyResponseToPromptActionPerformed
         this.txtPrompt.setText(this.txtResponse.getText());
-        this.rdoAssistant.setSelected(true);
+        this.tglAssistant.setSelected(true);
     }//GEN-LAST:event_btnCopyResponseToPromptActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCopyResponseToPrompt;
     private javax.swing.JButton btnSend;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JLabel lbTemperature;
     private javax.swing.JLabel lblPrompt;
     private javax.swing.JLabel lblPromptHistory;
     private javax.swing.JLabel lblRespose;
     private javax.swing.JPanel pnlPromptLeft;
     private javax.swing.JPanel pnlPromptRight;
-    private javax.swing.JRadioButton rdoAssistant;
-    private javax.swing.JRadioButton rdoSystem;
-    private javax.swing.JRadioButton rdoUser;
     private javax.swing.JScrollPane scrollPrompt;
     private javax.swing.JScrollPane scrollPromptHistory;
     private javax.swing.JScrollPane scrollResponse;
     private javax.swing.JSplitPane splitPrompt;
+    private javax.swing.JSlider spnTemperature;
+    private javax.swing.JToggleButton tglAssistant;
+    private javax.swing.JToggleButton tglSystem;
+    private javax.swing.JToggleButton tglUser;
     private javax.swing.JTextArea txtPrompt;
     private javax.swing.JEditorPane txtPromtHistory;
     private javax.swing.JTextArea txtResponse;

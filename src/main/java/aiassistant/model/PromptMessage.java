@@ -28,6 +28,26 @@ public class PromptMessage {
         this.item.setPromptCategory(category);
     }
 
+
+    /**
+     * @return the category
+     */
+    public int getTemperature() {
+        return item.getTemperature();
+    }
+
+    /**
+     *
+     * @param temperature
+     */
+    public void setTemperature(int temperature) {
+        this.item.setTemperature(temperature);
+    }
+
+    public double asTemperature() {
+        return this.item.asTemperature();
+    }
+
     /**
      * @return the prompt
      */
