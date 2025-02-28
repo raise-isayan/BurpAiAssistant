@@ -46,10 +46,12 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
 
         this.spnTemperature.setPaintLabels(true);
         this.spnTemperature.setPaintTicks(true);
+        this.spnTemperature.setMajorTickSpacing(100);
+        this.spnTemperature.setMinorTickSpacing(10);
         Format f = new DecimalFormat("0.0");
         Hashtable<Integer, JComponent> labels = new Hashtable<>();
-        for (int i = 0; i <= this.spnTemperature.getMaximum(); i++) {
-            JLabel label = new JLabel(f.format(i * 0.1));
+        for (int i = 0; i <= this.spnTemperature.getMaximum(); i+=20) {
+            JLabel label = new JLabel(f.format(i * 0.01));
             label.setFont(label.getFont().deriveFont(Font.PLAIN));
             labels.put(i, label);
         }
@@ -130,9 +132,9 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
 
         lbTemperature.setText("Temperature:");
 
-        spnTemperature.setMaximum(20);
+        spnTemperature.setMaximum(200);
         spnTemperature.setToolTipText("");
-        spnTemperature.setValue(8);
+        spnTemperature.setValue(80);
 
         javax.swing.GroupLayout pnlPromptRightLayout = new javax.swing.GroupLayout(pnlPromptRight);
         pnlPromptRight.setLayout(pnlPromptRightLayout);
@@ -142,28 +144,26 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
                 .addContainerGap()
                 .addGroup(pnlPromptRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(scrollResponse)
+                    .addComponent(scrollPrompt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
                     .addGroup(pnlPromptRightLayout.createSequentialGroup()
-                        .addGroup(pnlPromptRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(scrollPrompt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
-                            .addGroup(pnlPromptRightLayout.createSequentialGroup()
-                                .addComponent(lblPrompt)
-                                .addGap(8, 8, 8)
-                                .addComponent(tglSystem, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tglUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tglAssistant, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlPromptRightLayout.createSequentialGroup()
-                                .addComponent(lblRespose)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnCopyResponseToPrompt, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlPromptRightLayout.createSequentialGroup()
-                                .addComponent(lbTemperature)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(spnTemperature, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                        .addComponent(lblPrompt)
+                        .addGap(8, 8, 8)
+                        .addComponent(tglSystem, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tglUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tglAssistant, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlPromptRightLayout.createSequentialGroup()
+                        .addComponent(lblRespose)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCopyResponseToPrompt, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlPromptRightLayout.createSequentialGroup()
+                        .addComponent(lbTemperature)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spnTemperature, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         pnlPromptRightLayout.setVerticalGroup(
             pnlPromptRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,8 +186,8 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(lblRespose)
                     .addComponent(btnCopyResponseToPrompt))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollResponse, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addComponent(scrollResponse, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         splitPrompt.setRightComponent(pnlPromptRight);
@@ -236,6 +236,10 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
 
     public int getTemperature() {
         return this.spnTemperature.getValue();
+    }
+
+    public void setTemperature(int tempture) {
+        this.spnTemperature.setValue(tempture);
     }
 
     public String getPromptRequest() {
@@ -336,7 +340,7 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
             buff.append(HttpUtil.toHtmlEncode(item.getPromptCategory().name()));
             buff.append("<div>");
             buff.append("Tempture: ");
-            buff.append(String.format("%1.1f", item.asTemperature()));
+            buff.append(String.format("%1.2f", item.asTemperature()));
             buff.append("</div>");
             buff.append("</dt>");
             buff.append("<dd>");
