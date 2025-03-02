@@ -56,8 +56,18 @@ Select the prompt type.
 
 - Assistant:  Represent AI-generated responses from previous interactions
 
-- [Prompt Send] Button: Send prompt
+#### Tempture
 
+The AI's responses using the temperature setting 
+Temperature is a numeric value between 0 and 2. 
+
+- Lower temperatures (0.0 - 0.8) produce more predictable and deterministic outputs. They are best used for technical or factual tasks.
+
+- Higher temperatures (0.8 - 2.0) produce more creative and diverse outputs. They are suitable for exploratory tasks.
+
+#### Send
+
+- [Prompt Send] Button: Send prompt
 
 #### Respose
 

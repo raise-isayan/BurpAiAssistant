@@ -56,6 +56,7 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
             labels.put(i, label);
         }
         this.spnTemperature.setLabelTable(labels);
+        this.spnTemperatureStateChanged(null);
     }
 
     /**
@@ -83,6 +84,7 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
         tglAssistant = new javax.swing.JToggleButton();
         lbTemperature = new javax.swing.JLabel();
         spnTemperature = new javax.swing.JSlider();
+        lblTemptureValue = new javax.swing.JLabel();
         pnlPromptLeft = new javax.swing.JPanel();
         scrollPromptHistory = new javax.swing.JScrollPane();
         txtPromtHistory = new javax.swing.JEditorPane();
@@ -135,6 +137,13 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
         spnTemperature.setMaximum(200);
         spnTemperature.setToolTipText("");
         spnTemperature.setValue(80);
+        spnTemperature.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spnTemperatureStateChanged(evt);
+            }
+        });
+
+        lblTemptureValue.setText("0.8.0");
 
         javax.swing.GroupLayout pnlPromptRightLayout = new javax.swing.GroupLayout(pnlPromptRight);
         pnlPromptRight.setLayout(pnlPromptRightLayout);
@@ -161,6 +170,8 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
                         .addComponent(btnCopyResponseToPrompt, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlPromptRightLayout.createSequentialGroup()
                         .addComponent(lbTemperature)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblTemptureValue)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(spnTemperature, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -178,7 +189,9 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlPromptRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbTemperature)
-                    .addComponent(spnTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlPromptRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(spnTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblTemptureValue)))
                 .addGap(18, 18, 18)
                 .addComponent(scrollPrompt, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -232,6 +245,10 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
             category = PromptProperty.Category.SYSTEM;
         }
         return category;
+    }
+
+    public double asTemperature() {
+        return this.spnTemperature.getValue() / 100.0;
     }
 
     public int getTemperature() {
@@ -379,6 +396,10 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
         this.tglAssistant.setSelected(true);
     }//GEN-LAST:event_btnCopyResponseToPromptActionPerformed
 
+    private void spnTemperatureStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnTemperatureStateChanged
+        this.lblTemptureValue.setText(String.format("%1.2f", this.asTemperature()));
+    }//GEN-LAST:event_spnTemperatureStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCopyResponseToPrompt;
     private javax.swing.JButton btnSend;
@@ -387,6 +408,7 @@ public class AiAssistant extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JLabel lblPrompt;
     private javax.swing.JLabel lblPromptHistory;
     private javax.swing.JLabel lblRespose;
+    private javax.swing.JLabel lblTemptureValue;
     private javax.swing.JPanel pnlPromptLeft;
     private javax.swing.JPanel pnlPromptRight;
     private javax.swing.JScrollPane scrollPrompt;

@@ -65,6 +65,8 @@
                           </Group>
                           <Group type="102" attributes="0">
                               <Component id="lbTemperature" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="lblTemptureValue" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="spnTemperature" max="32767" attributes="0"/>
                           </Group>
@@ -87,7 +89,10 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="lbTemperature" min="-2" max="-2" attributes="0"/>
-                          <Component id="spnTemperature" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="spnTemperature" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTemptureValue" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="scrollPrompt" min="-2" pref="157" max="-2" attributes="0"/>
@@ -199,6 +204,14 @@
                 <Property name="maximum" type="int" value="200"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="value" type="int" value="80"/>
+              </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spnTemperatureStateChanged"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblTemptureValue">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="0.8.0"/>
               </Properties>
             </Component>
           </SubComponents>
