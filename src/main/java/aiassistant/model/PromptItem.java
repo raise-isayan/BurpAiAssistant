@@ -29,7 +29,7 @@ public class PromptItem {
     }
 
     @Expose
-    private int temperature = 80;
+    private int temperature = 50;
 
     public void setTemperature(int temperature) {
         this.temperature = temperature;
